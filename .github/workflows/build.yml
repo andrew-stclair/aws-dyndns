@@ -19,7 +19,7 @@ jobs:
 
       - name: Set outputs
         id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3.0.0
@@ -41,8 +41,6 @@ jobs:
           file: Dockerfile
           platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/ppc64le,linux/s390x
           push: true
-          annotations: |
-            org.opencontainers.image.description=DESCRIPTION
           tags: |
             ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }}
             ghcr.io/${{ github.repository }}:latest
